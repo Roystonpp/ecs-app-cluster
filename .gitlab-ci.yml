@@ -2,8 +2,14 @@ include:
   - template: Terraform.latest.gitlab-ci.yml
 
 variables:
-  # If not using GitLab's HTTP backend, remove this line and specify TF_HTTP_* variables
-  TF_STATE_NAME: default
-  TF_CACHE_KEY: default
-  # If your terraform files are in a subdirectory, set TF_ROOT accordingly
-  # TF_ROOT: terraform/production
+  PLAN: plan.cache
+  PLAN_JSON: plan.json
+
+plan:
+  stage: build
+  script:
+    - terraform plan -out=$PLAN
+    - terraform show --json $PLAN | convert_report > $PLAN_JSON
+  artifacts:
+    reports:
+      terraform: $PLAN_JSON
