@@ -2,8 +2,29 @@ include:
   - template: Terraform.latest.gitlab-ci.yml
 
 variables:
+  TF_ROOT: ${CI_PROJECT_DIR}/terraform/dev
   PLAN: plan.cache
   PLAN_JSON: plan.json
+
+before_script:
+  - cd ${TF_ROOT}
+
+stages:
+  - prepare
+  - validate
+  - build
+  - test
+  - deploy
+
+init:
+  stage: prepare
+  script:
+    - terraform init
+
+validate:
+  stage: validate
+  script:
+    - terraform validate
 
 plan:
   stage: build
@@ -13,3 +34,13 @@ plan:
   artifacts:
     reports:
       terraform: $PLAN_JSON
+
+apply:
+  stage: deploy
+  script:
+    - terraform apply
+  dependencies:
+    - plan
+  when: manual
+  only:
+    - master
