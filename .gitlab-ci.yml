@@ -1,5 +1,3 @@
-include:
-  - template: Terraform.latest.gitlab-ci.yml
 
 image: docker:latest
 
