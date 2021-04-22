@@ -9,8 +9,9 @@ variables:
   PLAN_JSON: plan.json
 
 before_script:
+  - apk update
+  - chmod +x ./docker_install.sh > /dev/null
   - cd ${TF_ROOT}
-  - sudo apt-get install docker -y
 
 stages:
   - prepare
