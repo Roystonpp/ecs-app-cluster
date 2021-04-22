@@ -7,8 +7,8 @@ module "vpc" {
 
   cidr_block   = "192.168.0.0/26"
   name         = "devops-vpc"
-  private_cidr = "192.168.1.0/28"
-  public_cidr  = "192.168.2.0/28"
+  private_cidr = "192.168.0.16/28"
+  public_cidr  = "192.168.0.32/28"
   vpc          = true
 }
 

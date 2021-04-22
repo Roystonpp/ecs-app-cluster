@@ -12,8 +12,6 @@ before_script:
   - apk update && apk add bash
   - apk add docker openrc
   - rc-update add docker boot
-  - cd ~/bin/
-  - systemctl
 
 stages:
   - prepare
