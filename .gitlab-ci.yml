@@ -12,7 +12,6 @@ before_script:
   - apk update
   - apk add docker openrc
   - rc-update add docker boot
-  - service docker start
   - cd ${TF_ROOT}
 
 stages:
