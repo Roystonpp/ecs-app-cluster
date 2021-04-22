@@ -11,7 +11,6 @@ variables:
 before_script:
   - apk update
   - apk add docker openrc
-  - addgroup username docker
   - rc-update add docker boot
   - service docker start
   - cd ${TF_ROOT}
