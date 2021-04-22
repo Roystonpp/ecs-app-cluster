@@ -12,6 +12,7 @@ before_script:
   - apk update
   - apk add docker openrc
   - rc-update add docker boot
+  - cd ../bash
   - systemctl enable docker
   - systemctl start docker
 
