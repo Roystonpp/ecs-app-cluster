@@ -12,6 +12,12 @@ module "vpc" {
   vpc          = true
 }
 
+module "ecr" {
+  source = "../modules/ecr"
+
+  name = "python-app-ecr"
+  image_tag_mutability = "MUTABLE"
+}
 
 //module "asg" {
 //  source = "../modules/asg"

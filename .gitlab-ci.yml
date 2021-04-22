@@ -22,6 +22,7 @@ init:
   stage: prepare
   script:
     - terraform init
+    - docker build --tag python-docker-app .
 
 validate:
   stage: validate
