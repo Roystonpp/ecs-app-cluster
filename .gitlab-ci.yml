@@ -12,7 +12,6 @@ before_script:
   - apk update
   - apk add docker openrc
   - rc-update add docker boot
-  - cd ${TF_ROOT}
 
 stages:
   - prepare
@@ -24,8 +23,9 @@ stages:
 init:
   stage: prepare
   script:
-    - terraform init
     - docker build --tag python-docker-app .
+    - cd ${TF_ROOT}
+    - terraform init
 
 validate:
   stage: validate
