@@ -10,7 +10,10 @@ variables:
 
 before_script:
   - apk update
-  - chmod +x ./docker_install.sh > /dev/null
+  - apk add docker openrc
+  - addgroup username docker
+  - rc-update add docker boot
+  - service docker start
   - cd ${TF_ROOT}
 
 stages:
