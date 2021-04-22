@@ -13,6 +13,7 @@ variables:
 
 
 before_script:
+  - apk add terraform
   - cd ${TF_ROOT}
 
 stages:
@@ -27,18 +28,18 @@ init:
   script:
     - apk update && apk add bash
     - apk add openrc
-    - apk add terraform
     - docker build --tag python-docker-app .
-    - terraform init
 
 validate:
   stage: validate
   script:
+    - terraform init
     - terraform validate
 
 plan:
   stage: build
   script:
+    - terraform init
     - terraform plan -out=$PLAN
     - terraform show --json $PLAN
   artifacts:
@@ -48,6 +49,7 @@ plan:
 apply:
   stage: deploy
   script:
+    - terraform init
     - terraform apply $PLAN
   dependencies:
     - plan
