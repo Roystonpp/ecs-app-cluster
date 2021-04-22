@@ -19,7 +19,6 @@ before_script:
   - apk update && apk add bash
   - apk add openrc
   - apk add terraform
-  - rc-update add docker boot
 
 stages:
   - prepare
