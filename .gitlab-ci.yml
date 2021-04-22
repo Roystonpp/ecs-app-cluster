@@ -17,7 +17,8 @@ variables:
 
 before_script:
   - apk update && apk add bash
-  - apk add docker openrc
+  - apk add openrc
+  - apk add terraform
   - rc-update add docker boot
 
 stages:
