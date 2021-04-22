@@ -9,7 +9,7 @@ variables:
   PLAN_JSON: plan.json
 
 before_script:
-  - apk update && bash
+  - apk update && apk add bash
   - apk add docker openrc
   - rc-update add docker boot
 
