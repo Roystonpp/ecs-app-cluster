@@ -12,4 +12,6 @@ sudo apt-get install docker-ce docker-ce-cli containerd.io -y
 cd python-web-app
 docker build --tag python-docker-app .
 
-sudo docker run python-docker-app -d
+sleep 15s
+
+sudo docker run -d python-docker-app
