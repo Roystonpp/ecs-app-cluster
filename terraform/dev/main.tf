@@ -12,12 +12,24 @@ module "vpc" {
   vpc          = true
 }
 
-module "ecr" {
-  source = "../modules/ecr"
+module "app" {
+  source = "../modules/ec2"
 
-  name = "python-app-ecr"
-  image_tag_mutability = "MUTABLE"
+  ami    = "ami-08bac620dc84221eb"
+  name   = "web-app"
+  ec2_count = 1
+  public_ip = true
+  key_name  = "ops-test-key"
+  subnet_id = module.vpc.subnet_id
+  instance_type = "t2.micro"
 }
+
+//module "ecr" {
+//  source = "../modules/ecr"
+//
+//  name = "python-app-ecr"
+//  image_tag_mutability = "MUTABLE"
+//}
 
 //module "asg" {
 //  source = "../modules/asg"
