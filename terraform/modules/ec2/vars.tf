@@ -5,3 +5,6 @@ variable "subnet_id" {}
 variable "public_ip" {}
 variable "instance_type" {}
 variable "key_name" {}
+variable "instance_sg" {}
+variable "iam_role_name" {}
+variable "profile_name" {}

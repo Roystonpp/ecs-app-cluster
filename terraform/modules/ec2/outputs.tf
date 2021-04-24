@@ -1,0 +1,1 @@
+output "instance" { value = join("", aws_instance.webapp[*].public_dns) }

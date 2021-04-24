@@ -1,5 +1,9 @@
-variable "cidr_block" {}
+variable "vpc_cidr_block" {}
 variable "name" {}
 variable "public_cidr" {}
 variable "private_cidr" {}
 variable "vpc" {}
+variable "lb_sgname" {}
+variable "instance_sg" {}
+variable "enable_dns" {}
+variable "enable_support" {}

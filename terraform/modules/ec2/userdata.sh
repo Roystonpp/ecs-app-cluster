@@ -1,17 +1,12 @@
 #!/usr/bin/bash
-sudo apt-get update
-sudo apt install git -y
-curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+sudo yum update -y
+sudo yum install git -y
 git clone https://github.com/Roystonpp/python-web-app.git
-echo \
-  "deb [arch=arm64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu \
-  $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
-
-sudo apt-get install docker-ce docker-ce-cli containerd.io -y
-
 cd python-web-app
+systemctl enable docker
+systemctl start docker
 docker build --tag python-docker-app .
-
 sleep 15s
-
-sudo docker run -d python-docker-app
+aws ecr get-login-password --region eu-west-1 | docker login --username AWS --password-stdin 674528447826.dkr.ecr.eu-west-1.amazonaws.com
+docker tag python-docker-app:latest 674528447826.dkr.ecr.eu-west-1.amazonaws.com/python-app-ecr:v1
+docker push 674528447826.dkr.ecr.eu-west-1.amazonaws.com/python-app-ecr:v1

@@ -1,5 +1,7 @@
 resource "aws_vpc" "vpc" {
-  cidr_block = var.cidr_block
+  cidr_block = var.vpc_cidr_block
+  enable_dns_hostnames = var.enable_dns
+  enable_dns_support   = var.enable_support
 
   tags = {
     Name = var.name
@@ -56,4 +58,71 @@ resource "aws_route_table_association" "public" {
 resource "aws_route_table_association" "private" {
   subnet_id = aws_subnet.private.id
   route_table_id = aws_route_table.private_rtb.id
+}
+
+resource "aws_security_group" "lb-sg" {
+  name   = var.lb_sgname
+  vpc_id = aws_vpc.vpc.id
+
+  ingress {
+    from_port = 80
+    to_port   = 80
+    protocol  = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    from_port = 22
+    to_port   = 22
+    protocol  = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    from_port = -1
+    to_port   = -1
+    protocol  = "icmp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    from_port = 0
+    to_port   = 0
+    protocol  = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
+
+resource "aws_security_group" "instance_sg" {
+  name        = var.instance_sg
+  description = "Allow traffic from public subnet"
+  vpc_id      = aws_vpc.vpc.id
+
+  ingress {
+    from_port = 8080
+    to_port   = 8080
+    protocol  = "tcp"
+    cidr_blocks = ["${var.vpc_cidr_block}"]
+  }
+
+  ingress {
+    from_port = -1
+    to_port   = -1
+    protocol  = "icmp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    from_port = 22
+    to_port   = 22
+    protocol  = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    from_port = 0
+    to_port   = 0
+    protocol  = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
 }
