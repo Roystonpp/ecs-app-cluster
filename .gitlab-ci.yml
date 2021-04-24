@@ -7,6 +7,7 @@ variables:
   AWS_ACCESS_KEY_ID: "AKIAZ2DIHJVJHCSTZNS7"
   AWS_SECRET_ACCESS_KEY: "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"
   TF_ROOT: ${CI_PROJECT_DIR}/terraform/dev
+  ECR_ROOT: ${CI_PROJECT_DIR}/terraform/modules/ecr
   PLAN: plan.cache
   PLAN_JSON: plan.json
   DOCKER_HOST: tcp://docker:2375
@@ -14,7 +15,6 @@ variables:
 
 before_script:
   - apk add terraform
-  - cd ${TF_ROOT}
 
 stages:
   - prepare
@@ -28,20 +28,26 @@ init:
   script:
     - apk update && apk add bash
     - apk add openrc
-    - docker build --tag python-docker-app .
+    - terraform init
+    - cd $ECR_ROOT
+    - terraform plan
+    - terraform apply
 
 validate:
   stage: validate
   script:
+    - cd ${TF_ROOT}
     - terraform init
     - terraform validate
 
 plan:
   stage: build
   script:
+    - cd ${TF_ROOT}
     - terraform init
     - terraform plan -out=$PLAN
     - terraform show --json $PLAN
+    - docker build --tag python-docker-app .
   artifacts:
     reports:
       terraform: $PLAN_JSON
@@ -49,6 +55,7 @@ plan:
 apply:
   stage: deploy
   script:
+    - cd ${TF_ROOT}
     - terraform init
     - terraform apply $PLAN
   dependencies:

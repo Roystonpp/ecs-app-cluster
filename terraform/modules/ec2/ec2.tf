@@ -54,7 +54,7 @@ resource "aws_iam_role" "ecr_role" {
       {
         "Action": "sts:AssumeRole",
         "Principal": {
-          "Service": "ecr.amazonaws.com"
+          "Service": "ec2.amazonaws.com"
         },
         "Effect": "Allow",
         "Sid": ""
@@ -76,12 +76,32 @@ resource "aws_instance" "webapp" {
   key_name      = var.key_name
   subnet_id     = var.subnet_id
   user_data     = file("../modules/ec2/userdata.sh")
-  security_groups = ["$var.instance_sg"]
+  security_groups = [aws_security_group.instance_sg.id]
   iam_instance_profile = aws_iam_instance_profile.ec2_profile.name
 
   associate_public_ip_address = var.public_ip
 
   tags = {
     Name = var.name
+  }
+}
+
+resource "aws_security_group" "instance_sg" {
+  name        = var.instance_sg
+  description = "Allow traffic from public subnet"
+  vpc_id      = var.vpc_id
+
+  ingress {
+    from_port = 22
+    to_port   = 22
+    protocol  = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    from_port = 0
+    to_port   = 0
+    protocol  = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
   }
 }

@@ -16,28 +16,30 @@ module "vpc" {
   enable_support = true
 }
 
-module "ec2" {
-  source = "../modules/ec2"
+//module "ec2" {
+//  source = "../modules/ec2"
+//
+//  ami       = "ami-00e64569efacb226a"
+//  name      = "web-app"
+//  ec2_count = 1
+//  public_ip = true
+//  key_name  = "ops-test-key"
+//  subnet_id = module.vpc.public_subnet_id
+//  instance_type = "t2.micro"
+//  iam_role_name = "ecr_push_role"
+//  profile_name  = "ecr_push_profile"
+//  depends_on    = [module.ecr]
+//  vpc_id        = module.vpc.vpc_id
+//  instance_sg   = "ec2_sg"
+//}
 
-  ami    = "ami-00e64569efacb226a"
-  name   = "web-app"
-  ec2_count = 1
-  public_ip = true
-  key_name  = "ops-test-key"
-  subnet_id = module.vpc.public_subnet_id
-  instance_sg = module.vpc.instance_sg_id
-  instance_type = "t2.micro"
-  iam_role_name = "ecr_push_role"
-  profile_name = "ecr_push_profile"
-  depends_on = [module.ecr]
-}
-
-module "ecr" {
-  source = "../modules/ecr"
-
-  name = "python-app-ecr"
-  image_tag_mutability = "MUTABLE"
-}
+//module "ecr" {
+//  source = "../modules/ecr"
+//
+//  name = "python-app-ecr"
+//  image_tag_mutability = "MUTABLE"
+//  depends_on = [module.vpc]
+//}
 
 //module "asg" {
 //  source = "../modules/asg"

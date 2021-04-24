@@ -8,3 +8,4 @@ variable "key_name" {}
 variable "instance_sg" {}
 variable "iam_role_name" {}
 variable "profile_name" {}
+variable "vpc_id" {}

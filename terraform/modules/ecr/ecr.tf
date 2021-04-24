@@ -1,3 +1,7 @@
+provider "aws" {
+  region = "eu-west-1"
+}
+
 # Creating ECR
 resource "aws_ecr_repository" "ecr_repo" {
   name                 = var.name
