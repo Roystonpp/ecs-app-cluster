@@ -28,8 +28,8 @@ init:
   script:
     - apk update && apk add bash
     - apk add openrc
-    - terraform init
     - cd $ECR_ROOT
+    - terraform init
     - terraform plan
     - terraform apply
 
