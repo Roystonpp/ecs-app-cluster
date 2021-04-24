@@ -31,7 +31,7 @@ init:
     - cd $ECR_ROOT
     - terraform init
     - terraform plan
-    - terraform apply
+    - terraform apply -auto-approve
 
 validate:
   stage: validate
