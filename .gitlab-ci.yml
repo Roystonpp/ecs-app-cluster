@@ -48,6 +48,8 @@ plan:
     - terraform plan -out=$PLAN
     - terraform show --json $PLAN
     - docker build --tag python-docker-app .
+    - docker tag python-docker-app:latest 674528447826.dkr.ecr.eu-west-1.amazonaws.com/python-app-ecr:v1
+    - docker push 674528447826.dkr.ecr.eu-west-1.amazonaws.com/python-app-ecr:v1
   artifacts:
     reports:
       terraform: $PLAN_JSON
