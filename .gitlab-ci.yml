@@ -44,10 +44,12 @@ plan:
   stage: build
   script:
     - cd ${TF_ROOT}
+    - apk add aws-cli
     - terraform init
     - terraform plan -out=$PLAN
     - terraform show --json $PLAN
     - docker build --tag python-docker-app .
+    - aws ecr get-login-password --region eu-west-1 | docker login --username AWS --password-stdin 674528447826.dkr.ecr.eu-west-1.amazonaws.com
     - docker tag python-docker-app:latest 674528447826.dkr.ecr.eu-west-1.amazonaws.com/python-app-ecr:v1
     - docker push 674528447826.dkr.ecr.eu-west-1.amazonaws.com/python-app-ecr:v1
   artifacts:
