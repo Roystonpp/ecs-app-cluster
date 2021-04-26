@@ -1,0 +1,13 @@
+variable "family" {}
+variable "vpc_id" {}
+variable "cluster_name" {}
+variable "service_name" {}
+variable "launch_type" {}
+variable "fargate_cpu" {}
+variable "fargate_memory" {}
+variable "network_mode" {}
+variable "desired_count" {}
+#variable "public_subnet_a_id" {}
+variable "private_subnet_id" {}
+#variable "public_subnet_b_id" {}
+variable "assign_public_ip" {}

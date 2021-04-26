@@ -6,14 +6,35 @@ module "vpc" {
   source = "../modules/vpc"
 
   name         = "devops-vpc"
-  private_cidr = "192.168.0.16/28"
-  public_cidr  = "192.168.0.32/28"
-  vpc          = true
-  lb_sgname    = "elb-security-group"
-  instance_sg  = "instance-security-group"
+  #az_zone_a    = "eu-west-1a"
+  #az_zone_b    = "eu-west-1b"
   vpc_cidr_block = "192.168.0.0/26"
+  public_cidr    = "192.168.0.0/28"
+  private_cidr   = "192.168.0.16/28"
+  #public_cidr_b  = "192.168.0.32/28"
+  #private_cidr_b = "192.168.0.48/28"
+  eip_vpc        = true
+  lb_sgname     = "elb-security-group"
+  #instance_sg   = "instance-security-group"
   enable_dns     = true
   enable_support = true
+}
+
+module "ecs" {
+  source = "../modules/ecs"
+
+  cluster_name = "App-cluster"
+  family       = "service"
+  service_name = "devops-ecs-service"
+  launch_type  = "FARGATE"
+  desired_count = 1
+  fargate_cpu   = 1024
+  fargate_memory = 2048
+  assign_public_ip = true
+  private_subnet_id = module.vpc.private_subnet_id
+  #public_subnet_b_id = module.vpc.public_subnet_b_id
+  network_mode = "awsvpc"
+  vpc_id = module.vpc.vpc_id
 }
 
 //module "ec2" {
