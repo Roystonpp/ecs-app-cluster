@@ -1,8 +1,3 @@
-data "aws_ecr_image" "service_image" {
-  repository_name = "python-app-ecr"
-  image_tag       = "latest"
-}
-
 data "aws_ecr_repository" "ecr_repo" {
   name = "python-app-ecr"
 }
@@ -74,6 +69,20 @@ resource "aws_iam_role" "ecs_role" {
 EOF
 }
 
+resource "aws_cloudwatch_log_group" "app_logs" {
+  name = var.log_group_name
+  retention_in_days = 1
+
+  tags = {
+    Environment = "development"
+  }
+}
+
+resource "aws_cloudwatch_log_stream" "app_logs_stream" {
+  log_group_name = aws_cloudwatch_log_group.app_logs.name
+  name = var.log_stream_name
+}
+
 resource "aws_ecs_cluster" "ecs_cluster" {
   name = var.cluster_name
 }
@@ -86,21 +95,31 @@ resource "aws_ecs_task_definition" "cluster_task" {
   memory                = var.fargate_memory
   task_role_arn         = aws_iam_role.ecs_role.arn
   execution_role_arn    = aws_iam_role.ecs_role.arn
-  container_definitions = jsonencode([
-    {
-      name      = "cluster-task"
-      image     = data.aws_ecr_repository.ecr_repo.repository_url
-      cpu       = 1024
-      memory    = 2048
-      essential = true
-      portMappings = [
-        {
-          containerPort = 5000
-          hostPort      = 5000
-        }
-      ]
-    }
-  ])
+  container_definitions = <<DEFINITION
+[
+{
+  "name": "cluster-task",
+      "image": "${data.aws_ecr_repository.ecr_repo.repository_url}",
+      "cpu": 1024,
+      "memory": 2048,
+      "essential": true,
+  "logConfiguration": {
+      "logDriver": "awslogs",
+      "options": {
+          "awslogs-group": "${var.log_group_name}",
+          "awslogs-region": "eu-west-1",
+          "awslogs-stream-prefix": "${var.log_stream_name}"
+      }
+  },
+  "portMappings": [
+      {
+          "containerPort": 5000,
+          "hostPort": 5000
+      }
+  ]
+}
+]
+DEFINITION
 }
 
 resource "aws_ecs_service" "fargate" {

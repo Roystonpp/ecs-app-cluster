@@ -27,14 +27,16 @@ module "ecs" {
   family       = "service"
   service_name = "devops-ecs-service"
   launch_type  = "FARGATE"
-  desired_count = 1
-  fargate_cpu   = 1024
+  desired_count  = 1
+  fargate_cpu    = 1024
   fargate_memory = 2048
-  assign_public_ip = true
+  assign_public_ip  = true
   private_subnet_id = module.vpc.private_subnet_id
   #public_subnet_b_id = module.vpc.public_subnet_b_id
-  network_mode = "awsvpc"
-  vpc_id = module.vpc.vpc_id
+  network_mode    = "awsvpc"
+  vpc_id          = module.vpc.vpc_id
+  log_group_name  = "pythonapp-logs"
+  log_stream_name = "awslogs-pythonapp"
 }
 
 //module "ec2" {

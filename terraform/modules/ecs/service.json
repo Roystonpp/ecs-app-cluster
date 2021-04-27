@@ -1,0 +1,23 @@
+[
+{
+  "name": "cluster-task",
+      "image": "${data.aws_ecr_repository.ecr_repo.repository_url}",
+      "cpu": 1024,
+      "memory": 2048,
+      "essential": true,
+  "logConfiguration": {
+      "logDriver": "awslogs",
+      "options": {
+          "awslogs-group": "pythonapp-logs",
+          "awslogs-region": "eu-west-1",
+          "awslogs-stream-prefix": "awslogs-pythonapp"
+      }
+  },
+  "portMappings": [
+      {
+          "containerPort": 5000,
+          "hostPort": 5000
+      }
+  ]
+}
+]

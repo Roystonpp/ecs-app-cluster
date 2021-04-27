@@ -11,3 +11,5 @@ variable "desired_count" {}
 variable "private_subnet_id" {}
 #variable "public_subnet_b_id" {}
 variable "assign_public_ip" {}
+variable "log_group_name" {}
+variable "log_stream_name" {}
