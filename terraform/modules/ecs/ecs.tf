@@ -1,7 +1,9 @@
+# Grabbing the ECR data from AWS
 data "aws_ecr_repository" "ecr_repo" {
   name = "python-app-ecr"
 }
 
+# Creating a security group
 resource "aws_security_group" "ecs_sg" {
   name = "ecs_sg"
   vpc_id = var.vpc_id
@@ -21,6 +23,7 @@ resource "aws_security_group" "ecs_sg" {
   }
 }
 
+# Specifying which policies are need for the role
 resource "aws_iam_role_policy" "access_ecr" {
   name = "access_ecr_policy"
   role = aws_iam_role.ecs_role.id
@@ -48,6 +51,7 @@ resource "aws_iam_role_policy" "access_ecr" {
 EOF
 }
 
+# Specifying the service attached to the role
 resource "aws_iam_role" "ecs_role" {
   assume_role_policy = <<EOF
 {
@@ -69,6 +73,7 @@ resource "aws_iam_role" "ecs_role" {
 EOF
 }
 
+# Creating a cloudwatch log group
 resource "aws_cloudwatch_log_group" "app_logs" {
   name = var.log_group_name
   retention_in_days = 1
@@ -78,15 +83,18 @@ resource "aws_cloudwatch_log_group" "app_logs" {
   }
 }
 
+# Attaching the stream to the cloudwatch group
 resource "aws_cloudwatch_log_stream" "app_logs_stream" {
   log_group_name = aws_cloudwatch_log_group.app_logs.name
   name = var.log_stream_name
 }
 
+# Creating the ECS Cluster
 resource "aws_ecs_cluster" "ecs_cluster" {
   name = var.cluster_name
 }
 
+# Task definition for the group with container config
 resource "aws_ecs_task_definition" "cluster_task" {
   family = var.family
   requires_compatibilities = [var.launch_type]
@@ -113,8 +121,8 @@ resource "aws_ecs_task_definition" "cluster_task" {
   },
   "portMappings": [
       {
-          "containerPort": 5000,
-          "hostPort": 5000
+          "containerPort": 8080,
+          "hostPort": 8080
       }
   ]
 }
@@ -122,6 +130,7 @@ resource "aws_ecs_task_definition" "cluster_task" {
 DEFINITION
 }
 
+# Creating the service with network config
 resource "aws_ecs_service" "fargate" {
   name    = var.service_name
   cluster = aws_ecs_cluster.ecs_cluster.id
@@ -132,6 +141,6 @@ resource "aws_ecs_service" "fargate" {
   network_configuration {
     security_groups = [aws_security_group.ecs_sg.id]
     assign_public_ip = var.assign_public_ip
-    subnets = [var.private_subnet_id]
+    subnets = [var.public_subnet_a_id]
   }
 }

@@ -2,6 +2,7 @@ provider "aws" {
   region = "eu-west-1"
 }
 
+# VPC Module
 module "vpc" {
   source = "../modules/vpc"
 
@@ -20,6 +21,7 @@ module "vpc" {
   enable_support = true
 }
 
+# ECS Module
 module "ecs" {
   source = "../modules/ecs"
 
@@ -31,8 +33,7 @@ module "ecs" {
   fargate_cpu    = 1024
   fargate_memory = 2048
   assign_public_ip  = true
-  private_subnet_id = module.vpc.private_subnet_id
-  #public_subnet_b_id = module.vpc.public_subnet_b_id
+  public_subnet_a_id = module.vpc.public_subnet_id
   network_mode    = "awsvpc"
   vpc_id          = module.vpc.vpc_id
   log_group_name  = "pythonapp-logs"
