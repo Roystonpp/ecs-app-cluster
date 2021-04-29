@@ -21,7 +21,6 @@ stages:
   - validate
   - test
   - build
-  - test
   - deploy
 
 init:
@@ -41,7 +40,7 @@ validate:
     - terraform init
     - terraform validate
 
-init:
+test:
   stage: test
   script:
     - cd ${TF_ROOT}
