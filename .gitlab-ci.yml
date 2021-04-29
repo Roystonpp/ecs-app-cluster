@@ -44,7 +44,7 @@ test:
   stage: test
   script:
     - cd ${TF_ROOT}
-    - apk add bash build-base curl file git gzip libc6-compat ncurses ruby ruby-dbm ruby-etc ruby-irb ruby-json sudo
+    - apk add bash build-base curl file git gzip libc6-compat ncurses ruby sudo
     - adduser -D -s /bin/bash linuxbrew
     - echo 'linuxbrew ALL=(ALL) NOPASSWD:ALL' >>/etc/sudoers
     - su -l linuxbrew
