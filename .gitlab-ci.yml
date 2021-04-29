@@ -44,14 +44,10 @@ test:
   stage: test
   script:
     - cd ${TF_ROOT}
-    - apk add bash build-base curl file git gzip libc6-compat ncurses ruby sudo
-    - adduser -D -s /bin/bash linuxbrew
-    - echo 'linuxbrew ALL=(ALL) NOPASSWD:ALL' >>/etc/sudoers
-    - su -l linuxbrew
-    - sh -c "$(curl -fsSL https://raw.githubusercontent.com/Linuxbrew/install/master/install.sh)"
-    - PATH=$HOME/.linuxbrew/bin:$HOME/.linuxbrew/sbin:$PATH
-    - brew update
-    - brew install conftest
+    - apk add wget
+    - wget https://github.com/open-policy-agent/conftest/releases/download/v0.24.0/conftest_0.24.0_Linux_x86_64.tar.gz
+    - tar xzf conftest_0.24.0_Linux_x86_64.tar.gz
+    - sudo mv conftest /usr/local/bin
 
 
 plan:
