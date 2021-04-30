@@ -73,7 +73,7 @@ apply:
   script:
     - cd ${TF_ROOT}
     - terraform init
-    - terraform apply $PLAN_JSON -auto-approve
+    - terraform apply -auto-approve
   dependencies:
     - plan
   when: manual
