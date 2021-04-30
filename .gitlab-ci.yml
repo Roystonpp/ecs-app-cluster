@@ -4,8 +4,8 @@ services:
   - docker:dind
 
 variables:
-  AWS_ACCESS_KEY_ID: "AKIAZ2DIHJVJHCSTZNS7"
-  AWS_SECRET_ACCESS_KEY: "+Evb+LbUIht/0zT1MgeQ6yRXr6o2Ob+2SYgzlNlg"
+  AWS_ACCESS_KEY_ID: "YOUR_ACCESS_KEY"
+  AWS_SECRET_ACCESS_KEY: "YOUR_SECRET_ACCESS_KEY"
   TF_ROOT: ${CI_PROJECT_DIR}/terraform/dev
   ECR_ROOT: ${CI_PROJECT_DIR}/terraform/modules/ecr
   PLAN: plan.cache
