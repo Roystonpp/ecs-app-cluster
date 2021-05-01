@@ -11,5 +11,3 @@ Once the solution's built get the public IP from the ecs fargate task and naviga
 I look forward to your feedback.
 
 Enjoy!
-
-Royston Pierre-Pinnock
