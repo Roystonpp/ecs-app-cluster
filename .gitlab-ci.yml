@@ -58,9 +58,9 @@ plan:
     - cd ${TF_ROOT}
     - apk add aws-cli
     - docker build --tag python-docker-app .
-    - aws ecr get-login-password --region eu-west-1 | docker login --username AWS --password-stdin 674528447826.dkr.ecr.eu-west-1.amazonaws.com
-    - docker tag python-docker-app:latest 674528447826.dkr.ecr.eu-west-1.amazonaws.com/python-app-ecr:latest
-    - docker push 674528447826.dkr.ecr.eu-west-1.amazonaws.com/python-app-ecr:latest
+    - aws ecr get-login-password --region eu-west-1 | docker login --username AWS --password-stdin YOUR_ACCOUNT.dkr.ecr.eu-west-1.amazonaws.com
+    - docker tag python-docker-app:latest YOUR_ACCOUNT.dkr.ecr.eu-west-1.amazonaws.com/python-app-ecr:latest
+    - docker push YOUR_ACCOUNT.dkr.ecr.eu-west-1.amazonaws.com/python-app-ecr:latest
     - terraform init
     - terraform plan -out=$PLAN
     - terraform show --json $PLAN
