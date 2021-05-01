@@ -29,7 +29,7 @@ resource "aws_iam_role_policy" "ec2_ecr_role" {
                 "ecr:DeleteRepositoryPolicy",
                 "ecr:ReplicateImage"
             ],
-            "Resource": "arn:aws:ecr:*:674528447826:repository/*"
+            "Resource": "arn:aws:ecr:*:YOUR_ACOUNT:repository/*"
         },
         {
             "Effect": "Allow",
